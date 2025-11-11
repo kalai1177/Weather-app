@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 80px;
+            background: linear-gradient(to bottom, #a1c4fd, #c2e9fb);
+            background-image: {% url "" %}
+            color: #333;
+        }
+        input, button {
+            padding: 10px;
+            margin: 10px;
+            border-radius: 8px;
+            border: none;
+        }
+        button {
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .card {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 15px;
+            display: inline-block;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <h2>🌦️ Django Weather App</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="city" placeholder="Enter city name" required>
+        <button type="submit">Check Weather</button>
+    </form>
+
+    {% if weather_data %}
+        {% if weather_data.error %}
+            <p style="color:red;">{{ weather_data.error }}</p>
+        {% else %}
+        <div class="card">
+            <h3>{{ weather_data.city }}, {{ weather_data.country }}</h3>
+            <img src="https://openweathermap.org/img/wn/{{ weather_data.icon }}@2x.png" alt="icon">
+            <p><strong>{{ weather_data.temperature }}°C</strong></p>
+            <p>{{ weather_data.description }}</p>
+        </div>
+        {% endif %}
+    {% endif %}
+</body>
+</html>
